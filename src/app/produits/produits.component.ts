@@ -7,14 +7,22 @@ import { ProduitService } from '../services/produit.service';
   templateUrl: './produits.component.html'
 })
 export class ProduitsComponent implements OnInit {
-  produits? : Produit[]
-  private produitService= new ProduitService()
 
-  constructor( ) {
+  produits? : Produit[]
+  
+  constructor(private produitService: ProduitService ) {
+    
     //this.produits=[]
+    
     }
   ngOnInit(): void {
     this.produits = this.produitService.listeProduits();
 
+  }
+  supprimerProduit(prod: Produit){
+    //console.log(prod);
+    let conf = confirm("Etes-vous sûr ?");
+    if (conf)
+      this.produitService.supprimerProduit(prod);
   }
 }
