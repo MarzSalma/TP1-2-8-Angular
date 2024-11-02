@@ -5,24 +5,19 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-produit',
-  templateUrl: './add-produit.component.html'
+  templateUrl: './add-produit.component.html',
 })
 export class AddProduitComponent implements OnInit {
+  newProduit = new Produit();
 
-    newProduit = new Produit();
+  message: string = '';
 
-    message: string = '';
-    
-  constructor(private produitService: ProduitService, private router :Router,){
-    
+  constructor(private produitService: ProduitService, private router: Router) {}
+  ngOnInit(): void {}
+  addProduit() {
+    this.produitService.ajouterProduit(this.newProduit).subscribe((prod) => {
+      console.log(prod);
+      this.router.navigate(['produits']);
+    });
   }
-  ngOnInit(): void {
-  }
-  addProduit(){
-    // console.log(this.newProduit);
-    this.produitService.ajouterProduit(this.newProduit);
-    this.message="produit "+this.newProduit.nomProduit+"ajouter avec succes"
-    this.router.navigate(['produits']);
-    }
-    
 }

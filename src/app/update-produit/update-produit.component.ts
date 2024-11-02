@@ -6,27 +6,27 @@ import { Produit } from '../model/produit.model';
 @Component({
   selector: 'app-update-produit',
   templateUrl: './update-produit.component.html',
-  styles: ``
+  styles: ``,
 })
 export class UpdateProduitComponent {
-  currentProduit= new Produit();
-  constructor(private activatedRoute: ActivatedRoute,
-    private router :Router,
+  currentProduit = new Produit();
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
 
-    private produitService: ProduitService){
-
+    private produitService: ProduitService
+  ) {}
+  ngOnInit() {
+    this.produitService
+      .consulterProduit(this.activatedRoute.snapshot.params['id'])
+      .subscribe((prod) => {
+        this.currentProduit = prod;
+      });
   }
-  ngOnInit():void{
-    console.log(this.activatedRoute.snapshot.params['id']);
-    this.currentProduit = this.produitService.consulterProduit(this.activatedRoute.snapshot. params['id']);
-    console.log(this.currentProduit);
 
-  }
-  updateProduit()
-  {
-   // console.log(this.currentProduit);
-   this.produitService.updateProduit(this.currentProduit);
-   this.router.navigate(['produits']);
-
+  updateProduit() {
+    this.produitService.updateProduit(this.currentProduit).subscribe((prod) => {
+      this.router.navigate(['produits']);
+    });
   }
 }

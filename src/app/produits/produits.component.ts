@@ -4,25 +4,32 @@ import { ProduitService } from '../services/produit.service';
 
 @Component({
   selector: 'app-produits',
-  templateUrl: './produits.component.html'
+  templateUrl: './produits.component.html',
 })
 export class ProduitsComponent implements OnInit {
+  produits?: Produit[];
 
-  produits? : Produit[]
-  
-  constructor(private produitService: ProduitService ) {
-    
+  constructor(private produitService: ProduitService) {
     //this.produits=[]
-    
-    }
+  }
   ngOnInit(): void {
-    this.produits = this.produitService.listeProduits();
-
-  }
-  supprimerProduit(prod: Produit){
-    //console.log(prod);
+    this.chargerProduits();
+    }
+    chargerProduits(){
+    this.produitService.listeProduits().subscribe(prods => {
+    console.log(prods);
+    this.produits = prods;
+    }); 
+    }
+    supprimerProduit(p: Produit)
+    {
     let conf = confirm("Etes-vous sûr ?");
-    if (conf)
-      this.produitService.supprimerProduit(prod);
-  }
+    if (conf && p.idProduit!==undefined)
+    this.produitService.supprimerProduit(p.idProduit).subscribe(() => {
+    console.log("produit supprimé");
+    this.chargerProduits();
+    });
+    } 
+
+  
 }
